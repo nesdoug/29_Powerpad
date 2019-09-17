@@ -65,9 +65,6 @@ void main (void) {
 		ppu_wait_nmi(); // wait till beginning of the frame
 
 		oam_clear();
-		sprid = 0;
-		
-		//sprid = oam_spr(x_position, y_position, 0, 0, sprid);
 		
 		powerpad_cur = read_powerpad(1);
 		process_powerpad(); // goes after the read
@@ -76,51 +73,51 @@ void main (void) {
 							// would be very useful for a game
 		
 		if(powerpad_cur & POWERPAD_1){
-			sprid = oam_spr(84, 83, 0, 0, sprid);
+			oam_spr(84, 83, 0, 0);
 		}
 		
 		if(powerpad_cur & POWERPAD_2){
-			sprid = oam_spr(100, 83, 0, 0, sprid);
+			oam_spr(100, 83, 0, 0);
 		}
 		
 		if(powerpad_cur & POWERPAD_3){
-			sprid = oam_spr(116, 83, 0, 0, sprid);
+			oam_spr(116, 83, 0, 0);
 		}
 		
 		if(powerpad_cur & POWERPAD_4){
-			sprid = oam_spr(132, 83, 0, 0, sprid);
+			oam_spr(132, 83, 0, 0);
 		}
 		
 		if(powerpad_cur & POWERPAD_5){
-			sprid = oam_spr(84, 107, 0, 0, sprid);
+			oam_spr(84, 107, 0, 0);
 		}
 		
 		if(powerpad_cur & POWERPAD_6){
-			sprid = oam_spr(100, 107, 0, 0, sprid);
+			oam_spr(100, 107, 0, 0);
 		}
 		
 		if(powerpad_cur & POWERPAD_7){
-			sprid = oam_spr(116, 107, 0, 0, sprid);
+			oam_spr(116, 107, 0, 0);
 		}
 		
 		if(powerpad_cur & POWERPAD_8){
-			sprid = oam_spr(132, 107, 0, 0, sprid);
+			oam_spr(132, 107, 0, 0);
 		}
 		
 		if(powerpad_cur & POWERPAD_9){
-			sprid = oam_spr(84, 131, 0, 0, sprid);
+			oam_spr(84, 131, 0, 0);
 		}
 		
 		if(powerpad_cur & POWERPAD_10){
-			sprid = oam_spr(100, 131, 0, 0, sprid);
+			oam_spr(100, 131, 0, 0);
 		}
 		
 		if(powerpad_cur & POWERPAD_11){
-			sprid = oam_spr(116, 131, 0, 0, sprid);
+			oam_spr(116, 131, 0, 0);
 		}
 		
 		if(powerpad_cur & POWERPAD_12){
-			sprid = oam_spr(132, 131, 0, 0, sprid);
+			oam_spr(132, 131, 0, 0);
 		}
 	}
 }

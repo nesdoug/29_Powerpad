@@ -23,7 +23,6 @@
 	.import		_vram_unrle
 	.import		_read_powerpad
 	.export		_PowerBG
-	.export		_sprid
 	.export		_powerpad_cur
 	.export		_powerpad_old
 	.export		_powerpad_new
@@ -241,8 +240,6 @@ _pal2:
 .segment	"BSS"
 
 .segment	"ZEROPAGE"
-_sprid:
-	.res	1,$00
 _powerpad_cur:
 	.res	2,$00
 _powerpad_old:
@@ -345,11 +342,6 @@ L00DE:	jsr     _ppu_wait_nmi
 ;
 	jsr     _oam_clear
 ;
-; sprid = 0;
-;
-	lda     #$00
-	sta     _sprid
-;
 ; powerpad_cur = read_powerpad(1);
 ;
 	lda     #$01
@@ -365,13 +357,13 @@ L00DE:	jsr     _ppu_wait_nmi
 ;
 	lda     _powerpad_cur+1
 	and     #$10
-	beq     L00EA
+	beq     L00E8
 ;
-; sprid = oam_spr(84, 83, 0, 0, sprid);
+; oam_spr(84, 83, 0, 0);
 ;
-	jsr     decsp4
+	jsr     decsp3
 	lda     #$54
-	ldy     #$03
+	ldy     #$02
 	sta     (sp),y
 	lda     #$53
 	dey
@@ -379,23 +371,19 @@ L00DE:	jsr     _ppu_wait_nmi
 	lda     #$00
 	dey
 	sta     (sp),y
-	dey
-	sta     (sp),y
-	lda     _sprid
 	jsr     _oam_spr
-	sta     _sprid
 ;
 ; if(powerpad_cur & POWERPAD_2){
 ;
-L00EA:	lda     _powerpad_cur+1
+L00E8:	lda     _powerpad_cur+1
 	and     #$40
-	beq     L00F3
+	beq     L00EF
 ;
-; sprid = oam_spr(100, 83, 0, 0, sprid);
+; oam_spr(100, 83, 0, 0);
 ;
-	jsr     decsp4
+	jsr     decsp3
 	lda     #$64
-	ldy     #$03
+	ldy     #$02
 	sta     (sp),y
 	lda     #$53
 	dey
@@ -403,23 +391,19 @@ L00EA:	lda     _powerpad_cur+1
 	lda     #$00
 	dey
 	sta     (sp),y
-	dey
-	sta     (sp),y
-	lda     _sprid
 	jsr     _oam_spr
-	sta     _sprid
 ;
 ; if(powerpad_cur & POWERPAD_3){
 ;
-L00F3:	lda     _powerpad_cur+1
+L00EF:	lda     _powerpad_cur+1
 	and     #$20
-	beq     L00FC
+	beq     L00F6
 ;
-; sprid = oam_spr(116, 83, 0, 0, sprid);
+; oam_spr(116, 83, 0, 0);
 ;
-	jsr     decsp4
+	jsr     decsp3
 	lda     #$74
-	ldy     #$03
+	ldy     #$02
 	sta     (sp),y
 	lda     #$53
 	dey
@@ -427,23 +411,19 @@ L00F3:	lda     _powerpad_cur+1
 	lda     #$00
 	dey
 	sta     (sp),y
-	dey
-	sta     (sp),y
-	lda     _sprid
 	jsr     _oam_spr
-	sta     _sprid
 ;
 ; if(powerpad_cur & POWERPAD_4){
 ;
-L00FC:	lda     _powerpad_cur+1
+L00F6:	lda     _powerpad_cur+1
 	and     #$80
-	beq     L0105
+	beq     L00FD
 ;
-; sprid = oam_spr(132, 83, 0, 0, sprid);
+; oam_spr(132, 83, 0, 0);
 ;
-	jsr     decsp4
+	jsr     decsp3
 	lda     #$84
-	ldy     #$03
+	ldy     #$02
 	sta     (sp),y
 	lda     #$53
 	dey
@@ -451,23 +431,19 @@ L00FC:	lda     _powerpad_cur+1
 	lda     #$00
 	dey
 	sta     (sp),y
-	dey
-	sta     (sp),y
-	lda     _sprid
 	jsr     _oam_spr
-	sta     _sprid
 ;
 ; if(powerpad_cur & POWERPAD_5){
 ;
-L0105:	lda     _powerpad_cur+1
+L00FD:	lda     _powerpad_cur+1
 	and     #$04
-	beq     L010E
+	beq     L0104
 ;
-; sprid = oam_spr(84, 107, 0, 0, sprid);
+; oam_spr(84, 107, 0, 0);
 ;
-	jsr     decsp4
+	jsr     decsp3
 	lda     #$54
-	ldy     #$03
+	ldy     #$02
 	sta     (sp),y
 	lda     #$6B
 	dey
@@ -475,23 +451,19 @@ L0105:	lda     _powerpad_cur+1
 	lda     #$00
 	dey
 	sta     (sp),y
-	dey
-	sta     (sp),y
-	lda     _sprid
 	jsr     _oam_spr
-	sta     _sprid
 ;
 ; if(powerpad_cur & POWERPAD_6){
 ;
-L010E:	lda     _powerpad_cur
+L0104:	lda     _powerpad_cur
 	and     #$40
-	beq     L0117
+	beq     L010B
 ;
-; sprid = oam_spr(100, 107, 0, 0, sprid);
+; oam_spr(100, 107, 0, 0);
 ;
-	jsr     decsp4
+	jsr     decsp3
 	lda     #$64
-	ldy     #$03
+	ldy     #$02
 	sta     (sp),y
 	lda     #$6B
 	dey
@@ -499,23 +471,19 @@ L010E:	lda     _powerpad_cur
 	lda     #$00
 	dey
 	sta     (sp),y
-	dey
-	sta     (sp),y
-	lda     _sprid
 	jsr     _oam_spr
-	sta     _sprid
 ;
 ; if(powerpad_cur & POWERPAD_7){
 ;
-L0117:	lda     _powerpad_cur
+L010B:	lda     _powerpad_cur
 	and     #$01
-	beq     L0120
+	beq     L0112
 ;
-; sprid = oam_spr(116, 107, 0, 0, sprid);
+; oam_spr(116, 107, 0, 0);
 ;
-	jsr     decsp4
+	jsr     decsp3
 	lda     #$74
-	ldy     #$03
+	ldy     #$02
 	sta     (sp),y
 	lda     #$6B
 	dey
@@ -523,23 +491,19 @@ L0117:	lda     _powerpad_cur
 	lda     #$00
 	dey
 	sta     (sp),y
-	dey
-	sta     (sp),y
-	lda     _sprid
 	jsr     _oam_spr
-	sta     _sprid
 ;
 ; if(powerpad_cur & POWERPAD_8){
 ;
-L0120:	lda     _powerpad_cur+1
+L0112:	lda     _powerpad_cur+1
 	and     #$02
-	beq     L0129
+	beq     L0119
 ;
-; sprid = oam_spr(132, 107, 0, 0, sprid);
+; oam_spr(132, 107, 0, 0);
 ;
-	jsr     decsp4
+	jsr     decsp3
 	lda     #$84
-	ldy     #$03
+	ldy     #$02
 	sta     (sp),y
 	lda     #$6B
 	dey
@@ -547,23 +511,19 @@ L0120:	lda     _powerpad_cur+1
 	lda     #$00
 	dey
 	sta     (sp),y
-	dey
-	sta     (sp),y
-	lda     _sprid
 	jsr     _oam_spr
-	sta     _sprid
 ;
 ; if(powerpad_cur & POWERPAD_9){
 ;
-L0129:	lda     _powerpad_cur+1
+L0119:	lda     _powerpad_cur+1
 	and     #$01
-	beq     L0132
+	beq     L0120
 ;
-; sprid = oam_spr(84, 131, 0, 0, sprid);
+; oam_spr(84, 131, 0, 0);
 ;
-	jsr     decsp4
+	jsr     decsp3
 	lda     #$54
-	ldy     #$03
+	ldy     #$02
 	sta     (sp),y
 	lda     #$83
 	dey
@@ -571,23 +531,19 @@ L0129:	lda     _powerpad_cur+1
 	lda     #$00
 	dey
 	sta     (sp),y
-	dey
-	sta     (sp),y
-	lda     _sprid
 	jsr     _oam_spr
-	sta     _sprid
 ;
 ; if(powerpad_cur & POWERPAD_10){
 ;
-L0132:	lda     _powerpad_cur
+L0120:	lda     _powerpad_cur
 	and     #$10
-	beq     L013B
+	beq     L0127
 ;
-; sprid = oam_spr(100, 131, 0, 0, sprid);
+; oam_spr(100, 131, 0, 0);
 ;
-	jsr     decsp4
+	jsr     decsp3
 	lda     #$64
-	ldy     #$03
+	ldy     #$02
 	sta     (sp),y
 	lda     #$83
 	dey
@@ -595,23 +551,19 @@ L0132:	lda     _powerpad_cur
 	lda     #$00
 	dey
 	sta     (sp),y
-	dey
-	sta     (sp),y
-	lda     _sprid
 	jsr     _oam_spr
-	sta     _sprid
 ;
 ; if(powerpad_cur & POWERPAD_11){
 ;
-L013B:	lda     _powerpad_cur
+L0127:	lda     _powerpad_cur
 	and     #$04
-	beq     L0144
+	beq     L012E
 ;
-; sprid = oam_spr(116, 131, 0, 0, sprid);
+; oam_spr(116, 131, 0, 0);
 ;
-	jsr     decsp4
+	jsr     decsp3
 	lda     #$74
-	ldy     #$03
+	ldy     #$02
 	sta     (sp),y
 	lda     #$83
 	dey
@@ -619,23 +571,19 @@ L013B:	lda     _powerpad_cur
 	lda     #$00
 	dey
 	sta     (sp),y
-	dey
-	sta     (sp),y
-	lda     _sprid
 	jsr     _oam_spr
-	sta     _sprid
 ;
 ; if(powerpad_cur & POWERPAD_12){
 ;
-L0144:	lda     _powerpad_cur+1
+L012E:	lda     _powerpad_cur+1
 	and     #$08
 	jeq     L00DE
 ;
-; sprid = oam_spr(132, 131, 0, 0, sprid);
+; oam_spr(132, 131, 0, 0);
 ;
-	jsr     decsp4
+	jsr     decsp3
 	lda     #$84
-	ldy     #$03
+	ldy     #$02
 	sta     (sp),y
 	lda     #$83
 	dey
@@ -643,11 +591,7 @@ L0144:	lda     _powerpad_cur+1
 	lda     #$00
 	dey
 	sta     (sp),y
-	dey
-	sta     (sp),y
-	lda     _sprid
 	jsr     _oam_spr
-	sta     _sprid
 ;
 ; while (1){
 ;
